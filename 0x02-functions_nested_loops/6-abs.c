@@ -2,7 +2,7 @@
 
 /**
 * _abs - computes absolute values
-* @i: number parameter to be checked
+* @n: number parameter to be checked
 *
 * Return: absolute number
 */
