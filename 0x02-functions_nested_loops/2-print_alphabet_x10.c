@@ -1,6 +1,6 @@
 #include "main.h"
 /**
-* 2-print_alphabet_x10 - prints 10 times the alphabet
+* print_alphabet_x10 - prints 10 times the alphabet
 *
 * Description: print_alphabet_x10 function prints the alphabet 10 times. It
 * uses two loops with the inside loop printing the alphabet and main loop
