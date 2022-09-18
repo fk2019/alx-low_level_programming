@@ -1,4 +1,3 @@
-#include "main.h"
 #include <stdio.h>
 
 /**
@@ -6,7 +5,7 @@
 *
 * Return: Always 0
 */
-void print_natural(void)
+int main(void)
 {
 	int a = 3;
 	int b = 5;
@@ -20,5 +19,6 @@ void print_natural(void)
 		}
 	}
 	printf("%d\n", sum);
+	return (0);
 }
 
