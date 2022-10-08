@@ -3,7 +3,8 @@
 #include <limits.h>
 
 /**
- * create_array - creates array of chars, and initializes it with a specific char
+ * create_array - creates array of chars, and initializes it
+ * with a specific char
  * @size: size of array
  * @c: character to initialize with
  *
