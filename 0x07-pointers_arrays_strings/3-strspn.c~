@@ -1,0 +1,19 @@
+#include "main.h"
+#include <stddf.h>
+
+/**
+* _strspn - gets length of a prefix substring
+* @s: pointer to string
+* @accept: pointer to string to locate
+*
+* Return: number of bytes in initial segment of s which 
+* consist only of bytes from accept
+*/
+unsigned int _strspn(char *s, char *accept)
+{
+	unsigned int len = 0;
+
+	if (s1 == NULL || s2 == NULL)
+		return len;
+
+}

@@ -1,0 +1,35 @@
+#include "main.h"
+
+/**
+* print_rev - reverse string
+* @s: pointer operand
+*
+* Return: void
+*/
+void print_rev(char *s)
+{
+	int i, len;
+
+	len = 0;
+	i = 0;
+	len = _strlen(s);
+	for (i = len - 1; i >= 0; i++)
+		_putchar(i);
+	_putchar(10);
+}
+ /**
+  4 * _strlen - returns length of string
+  5 * @s: pointer operand
+  6 *
+  7 * Return: length of string
+  8 */
+  9 int _strlen(char *s)
+ 10 {
+ 11         int i;
+ 12
+ 13         for (i = 0; s[i] != '\0'; ++i)
+ 14         {
+ 15         }
+ 16
+ 17         return (i);
+ 18 }
