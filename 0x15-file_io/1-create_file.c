@@ -28,7 +28,7 @@ int create_file(const char *filename, char *text_content)
 			p++;
 		}
 		l = write(fd, text_content, n);
-		if (l == -1)
+		if (l != n)
 			return (-1);
 	}
 	close(fd);
