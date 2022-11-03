@@ -1,5 +1,7 @@
 #include "main.h"
-
+int read_files(int fd_from, int fd_to, char *file_from, char *file_to);
+int write_file(char *buf, int fd_to, int r, char *file_to);
+int open_files(char *file_from, char *file_to);
 /**
  * main - copies content of a file to another file
  * @agc: number of arguments
@@ -8,51 +10,119 @@
  */
 int main(int agc, char *argv[])
 {
-	char *buf;
-	int fd1, fd2, r, a, b;
+	char *file_from, *file_to;
 
 	if (agc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-	buf = malloc(sizeof(char) * 1024);
-	if (buf == NULL)
+	file_from = argv[1];
+	file_to = argv[2];
+	open_files(file_from, file_to);
+	exit(0);
+	return (0);
+}
+
+/**
+ * read_files - reads contents of files
+ * @fd_from: source file fd
+ * @fd_to: destination file fd
+ * @file_from: source file
+ * @file_to: destination file
+ *
+ * Return: 0, 98 on failrure
+ */
+int read_files(int fd_from, int fd_to, char *file_from, char *file_to)
+{
+	char buf[1024];
+	int r;
+
+	r = read(fd_from, buf, 1024);
+	if (r == -1)
 	{
-		return (-1);
-	}
-	fd1 = open(argv[1], O_RDONLY);
-	if (fd1 == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file argv[1]\n");
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
 		exit(98);
 	}
-	fd2 = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	while ((r = read(fd1, buf, 1024)) > 0)
+	write_file(buf, fd_to, r, file_to);
+	while (r != 0)
 	{
-		if (fd2 == -1 || write(fd2, buf, r) != r)
+		r = read(fd_from, buf, 1024);
+		if (r == -1)
 		{
-			dprintf(STDERR_FILENO, "Error: Can't write to argv[2]\n");
-			close(fd1);
+			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
+		exit(98);
+		}
+		if (r == 0)
+			return (0);
+		write_file(buf, fd_to, r, file_to);
+	}
+	return (0);
+}
+
+/**
+ * write_file - writes contents of buffer to a file
+ * @buf: buffer
+ * @fd_to: file descriptor
+ * @r: number of characters
+ * @file_to: file to be written
+ *
+ * Return: 0, 99 on error
+ */
+int write_file(char *buf, int fd_to, int r, char *file_to)
+{
+	int i;
+
+	i = 0;
+	while (i < r)
+	{
+		if (write(fd_to, &buf[i], 1) == -1)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
+			exit(99);
+		}
+		i++;
+	}
+	return (0);
+}
+
+/**
+ * open_files - opens files
+ * @file_from: source file
+ * @file_to: destination file
+ *
+ * Return: 0, or 98, 99 on failure
+ */
+int open_files(char *file_from, char *file_to)
+{
+	int fd_from, fd_to;
+
+	fd_from = open(file_from, O_RDONLY);
+	if (fd_from == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file fd_from\n");
+		exit(98);
+	}
+	fd_to = open(file_to, O_CREAT | O_EXCL | O_WRONLY, 0664);
+	if (fd_to == -1)
+	{
+		fd_to = open(file_to, O_WRONLY | O_TRUNC);
+		if (fd_to == -1)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to fd_to\n");
 			exit(99);
 		}
 	}
-	if (r == -1)
+	read_files(fd_from, fd_to, file_from, file_to);
+	if (close(fd_from) == -1)
 	{
-		free(buf);
-		dprintf(STDERR_FILENO, "Error: Can't read from file argv[1]\n");
-		exit(98);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d", fd_from);
+		exit(100);
 	}
-       a = close(fd1);
-       b = close(fd2);
-       if (a == -1 || b == -1)
-       {
-	       if (a == -1)
-		       dprintf(STDERR_FILENO, "Error: Can't close fd %d", a);
-	       if ( b == -1)
-		       dprintf(STDERR_FILENO, "Error: Can't close fd %d", b);
-	       free(buf);
-	       exit(100);
-       }
-       return (0);
+	if (close(fd_to) == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d", fd_to);
+		exit(100);
+	}
+	return (0);
 }
