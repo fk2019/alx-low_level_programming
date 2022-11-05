@@ -100,7 +100,7 @@ int open_files(char *file_from, char *file_to)
 	fd_from = open(file_from, O_RDONLY);
 	if (fd_from == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file fd_from\n");
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
 		exit(98);
 	}
 	fd_to = open(file_to, O_CREAT | O_EXCL | O_WRONLY, 0664);
@@ -109,7 +109,7 @@ int open_files(char *file_from, char *file_to)
 		fd_to = open(file_to, O_WRONLY | O_TRUNC);
 		if (fd_to == -1)
 		{
-			dprintf(STDERR_FILENO, "Error: Can't write to fd_to\n");
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
 			exit(99);
 		}
 	}
