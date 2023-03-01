@@ -1,4 +1,4 @@
 CC := gcc
-SRC := $(wildcard *.c)
+SRC := school.c main.c
 all:
 	$(CC) ${SRC} -o school
